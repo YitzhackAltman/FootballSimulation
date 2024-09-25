@@ -14,7 +14,7 @@ public class Main {
 }
 
 /**
- * я предлагаю рендерить только плитки внутри границ экрана.
+ *
  *
  * public void render(Graphics g) {
  *     for (int y = 0; y < mapHeight(); y++) {

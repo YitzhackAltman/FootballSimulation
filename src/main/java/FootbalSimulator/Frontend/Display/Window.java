@@ -71,6 +71,10 @@ public class Window {
         canvas.getBufferStrategy().getDrawGraphics().dispose();
     }
 
+    public Canvas getCanvas() {
+        return canvas;
+    }
+
     private BufferedImage getImage() {
         return new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
     }

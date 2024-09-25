@@ -70,5 +70,6 @@ public class Player {
         } else if (this.position.y >= 720) {
             this.direction = Dir.UP;
         }
+
     }
 }

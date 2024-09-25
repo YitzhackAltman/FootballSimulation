@@ -8,7 +8,6 @@ public class Position {
         this.y = y;
     }
 
-    // Position top left corner
     public Position() {
         x = 0;
         y = 0;

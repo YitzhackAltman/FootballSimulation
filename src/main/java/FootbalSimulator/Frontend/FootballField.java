@@ -19,16 +19,18 @@ public class FootballField {
     private static final int FOOTBALL_FIELD_HEIGHT = dimension.height;
     private static final int FOOTBALL_FIELD_WIDTH = dimension.width * FOOTBALL_FIELD_HEIGHT/1000;
     private Ball ball;
-    private Goal leftGoal;
-    private Goal rightGoal;
-    private Team leftTeam;
-    private Team rightTeam;
-    private Line lines[];
-    private Camera camera;
+    private Goal[] goals;
+    private final Goal leftGoal;
+    private final Goal rightGoal;
+    private Team[] teams;
+    private final Team leftTeam;
+    private final Team rightTeam;
+    private final Line lines[];
+    private final Camera camera;
     protected final GameState gameState;
     public boolean gameStarted;
     private int secondsForEachRotation;
-    private Player myPlayer;
+    private final Player myPlayer;
     private String introCounter;
     private Long startTime;
     private static final String LEFT_TEAM_NAME = "FCB";
@@ -171,4 +173,25 @@ public class FootballField {
 
         rightGoal.setGoalPosition(new Position(rightLineFrom.x, rightLineFrom.y/2));
     }
+
+    private void createTeams() {
+        teams = new Team[2];
+        for(int i =0; i < teams.length; ++i) {
+            teams[i] = new Team(getTeamName(i));
+        }
+    }
+
+    private static String getTeamName(int i) {
+        return (i == 0) ? LEFT_TEAM_NAME : RIGHT_TEAM_NAME;
+    }
 }
+
+
+/*
+*
+* canvas setPosition(OnPlayerMove move);
+* player position(x, y);
+* lambda OnPlayerMove(player_pos.x, player_pos.y);
+*
+*
+* */
