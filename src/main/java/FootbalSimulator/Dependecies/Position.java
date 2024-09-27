@@ -65,8 +65,16 @@ public class Position {
         return new Position(this.x * p.x, this.y * p.y);
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof Position position)) return false;
+
+        if(position == this) return true;
+
+        return position.x == x && position.y == y;
+    }
 
     public String toString() {
-        return "pos("  + x + " ," + y +")";
+        return "("  + x + " ," + y +")";
     }
 }

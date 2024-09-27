@@ -3,14 +3,17 @@ package FootbalSimulator.Frontend;
 
 import FootbalSimulator.Dependecies.LineIndex;
 import FootbalSimulator.Frontend.GameObjects.Line;
+import FootbalSimulator.Frontend.ui.listeners.KeyListener;
 import FootbalSimulator.Player;
 import FootbalSimulator.Dependecies.Position;
 import FootbalSimulator.Frontend.GameObjects.Ball;
-import FootbalSimulator.Frontend.GameObjects.Camera;
 import FootbalSimulator.Frontend.GameObjects.Goal;
 
 import FootbalSimulator.Frontend.Players.Team;
 import FootbalSimulator.Frontend.states.GameState.GameState;
+
+import static FootbalSimulator.Dependecies.Utils.camera;
+
 
 import java.awt.*;
 
@@ -26,7 +29,6 @@ public class FootballField {
     private final Team leftTeam;
     private final Team rightTeam;
     private final Line lines[];
-    private final Camera camera;
     protected final GameState gameState;
     public boolean gameStarted;
     private int secondsForEachRotation;
@@ -52,9 +54,12 @@ public class FootballField {
 
 
         myPlayer = leftTeam.getRandomPlayer();
+        myPlayer.setTshort_color(new Color(236, 6, 6));
+
+        KeyListener.setPlayer(myPlayer);
 
         // TODO: The camera starts with the ball position
-        camera = new Camera(myPlayer.getPosition(), myPlayer.getDirection());
+
 
 
     }
@@ -68,7 +73,6 @@ public class FootballField {
             int duration = 1000;
             if(difference >= duration) {
                 startTime = System.currentTimeMillis();
-                secondsForEachRotation--;
             }
 
             if(secondsForEachRotation <= 0) {
@@ -82,10 +86,14 @@ public class FootballField {
             }
         }
 
+        leftTeam.movePlayers();
+        // TODO: rightTeam.movePlayers();
         camera.updateCameraPosition(myPlayer.getDirection());
 
-        leftTeam.movePlayers();
-        rightTeam.movePlayers();
+
+
+        leftTeam.displayCommandInfo();
+
     }
 
     public void render(Graphics g) {
@@ -102,13 +110,15 @@ public class FootballField {
             rightGoal.render(g);
         }
 
-        camera.render(g);
-
         leftTeam.draw(g);
 
-        rightTeam.draw(g);
 
-        myPlayer.setPosition(Player.myPlayer);
+        // TODO: rightTeam.draw(g);
+
+        // TODO: myPlayer.setPosition(Player.myPlayer);
+
+        // Moves the whole canvas  with my player position
+        //gameState.moveCanvas(myPlayer::getPosition);
 
 /*
         if(ball != null ) {
@@ -139,7 +149,8 @@ public class FootballField {
         // Circle Position
         final Position bigCircleRadius = new Position(80, 80);
         // Draw Line
-        g.drawLine((int)middleLineFrom.x , (int)middleLineFrom.y, (int)middleLineFrom.x, (int)FOOTBALL_FIELD_HEIGHT);
+       // g.drawLine((int)middleLineFrom.x , (int)middleLineFrom.y, (int)middleLineFrom.x, FOOTBALL_FIELD_HEIGHT);
+
         // Draw Circle
         g.drawOval((int)(middleLineFrom.x - bigCircleRadius.x/2), (int)(middleLineFrom.y/2 - (int)bigCircleRadius.y/2), (int)bigCircleRadius.x, (int)bigCircleRadius.y);
 
@@ -152,14 +163,14 @@ public class FootballField {
 
         final Position bottomLineFrom = new Position(-FOOTBALL_FIELD_WIDTH, FOOTBALL_FIELD_HEIGHT);
         final Position bottomLineTo = new Position(FOOTBALL_FIELD_WIDTH, FOOTBALL_FIELD_HEIGHT);
-        g.drawLine((int)bottomLineFrom.x, (int)bottomLineFrom.y, FOOTBALL_FIELD_WIDTH, (int)bottomLineFrom.y);
+        // g.drawLine((int)bottomLineFrom.x, (int)bottomLineFrom.y, FOOTBALL_FIELD_WIDTH, (int)bottomLineFrom.y);
 
         lines[LineIndex.LINE_BOTTOM.ordinal()] = new Line(bottomLineFrom, bottomLineTo);
 
 
         final Position leftLineFrom = new Position(-FOOTBALL_FIELD_WIDTH, -FOOTBALL_FIELD_HEIGHT);
         final Position leftLineTo =  new Position(-FOOTBALL_FIELD_WIDTH, FOOTBALL_FIELD_HEIGHT);
-        g.drawLine((int)leftLineFrom.x, (int)leftLineFrom.y, (int)leftLineFrom.x, FOOTBALL_FIELD_HEIGHT);
+        // g.drawLine((int)leftLineFrom.x, (int)leftLineFrom.y, (int)leftLineFrom.x, FOOTBALL_FIELD_HEIGHT);
         leftGoal.setGoalPosition(leftLineFrom);
 
         lines[LineIndex.LINE_LEFT.ordinal()] = new Line(leftLineFrom, leftLineTo);
@@ -167,13 +178,18 @@ public class FootballField {
 
         final Position rightLineFrom = new Position(FOOTBALL_FIELD_WIDTH , FOOTBALL_FIELD_HEIGHT);
         final Position rightLineTo = new Position(FOOTBALL_FIELD_WIDTH, -FOOTBALL_FIELD_HEIGHT);
-        g.drawLine((int)rightLineFrom.x, (int)rightLineFrom.y, (int) rightLineFrom.x, -FOOTBALL_FIELD_HEIGHT);
+        // g.drawLine((int)rightLineFrom.x, (int)rightLineFrom.y, (int) rightLineFrom.x, -FOOTBALL_FIELD_HEIGHT);
 
         lines[LineIndex.LINE_RIGHT.ordinal()] = new Line(rightLineFrom, rightLineTo);
 
         rightGoal.setGoalPosition(new Position(rightLineFrom.x, rightLineFrom.y/2));
+
+        for (Line line : lines) {
+            line.drawLine(g);
+        }
     }
 
+    // HANDLE TEAM NOT MANUALLY
     private void createTeams() {
         teams = new Team[2];
         for(int i =0; i < teams.length; ++i) {

@@ -39,6 +39,6 @@ public class MouseListener implements java.awt.event.MouseListener, MouseMotionL
 
     @Override
     public void mouseMoved(MouseEvent e) {
-        Player.setPosition(e.getX(), e.getY());
+        // Player.setPosition(e.getX(), e.getY());
     }
 }

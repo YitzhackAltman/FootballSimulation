@@ -1,6 +1,7 @@
 package FootbalSimulator.Frontend.GameObjects;
 
 import FootbalSimulator.Dependecies.Position;
+import FootbalSimulator.Dependecies.Utils;
 
 import java.awt.*;
 
@@ -22,6 +23,9 @@ public class Line {
     }
 
     public void drawLine(Graphics g) {
-        g.drawLine((int)from.x, (int)from.y, (int)to.x, (int)to.y);
+        Position drawFrom = Utils.drawCharacterRelativeToCamera(Utils.camera.getCameraPosition(), from);
+        Position drawTo = Utils.drawCharacterRelativeToCamera(Utils.camera.getCameraPosition(), to);
+
+        g.drawLine((int)drawFrom.x, (int)drawFrom.y, (int)drawTo.x, (int)drawTo.y);
     }
 }

@@ -91,17 +91,10 @@ public class Application {
         Graphics g = window.getGraphics();
         window.clear();
         if(StateManager.getCurrentState() != null) {
-            indicate();
             StateManager.getCurrentState().render(g);
             g.setColor(Color.WHITE);
             g.drawString("FPS: " + fps,30, 60);
         }
         window.show();
-    }
-
-    private void indicate() {
-        if(StateManager.getCurrentState() instanceof GameState gameState) {
-            gameState.setCanvas(window.getCanvas());
-        }
     }
 }
